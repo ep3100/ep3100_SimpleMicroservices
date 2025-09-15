@@ -26,7 +26,7 @@ Sprint Completion Status Report
 
 2. Completed Work ✅
 Resource 1
-class EventBase(BaseModel):
+- class EventBase(BaseModel):
     title: str = Field(..., description="Title of the event")
     description: str = Field(..., description="Description of the event")
     start_time: datetime = Field(description="Start time (EST)")
@@ -46,7 +46,7 @@ class EventBase(BaseModel):
     }
 
 Resource 2
-class OrganizationBase(BaseModel):
+- class OrganizationBase(BaseModel):
     name: str = Field(..., description="Name of the organization")
     org_type: str = Field(..., description="Type of organization (College, company, club, etc.)")
     description: Optional[str] = Field(description="Summary of organization")
