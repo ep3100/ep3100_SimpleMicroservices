@@ -1,7 +1,11 @@
 Sprint Completion Status Report
+
 **Student	Name:**	[Emanuel Pimentel]
+
 **Sprint	Number:**	[Sprint	0]
+
 **Duration:**	[9/13/25]	– [9/14/2025]
+
 **Report	Date:**	[9/14/2025]
 
 
@@ -68,10 +72,12 @@ Resource 2
         }
     }
 ```
+
 main.py Routes
-# -----------------------------------------------------------------------------
+
 # Event endpoints
-# -----------------------------------------------------------------------------
+
+
 ```
 @app.post("/events", response_model=EventRead, status_code=201)
 def create_event(event: EventCreate):
@@ -122,9 +128,10 @@ def delete_event(event_id: UUID):
 
 ```
 
-# -----------------------------------------------------------------------------
+
 # Organization endpoints
-# -----------------------------------------------------------------------------
+
+
 ```
 @app.post("/organizations", response_model=OrganizationRead, status_code=201)
 def create_organization(org: OrganizationCreate):
@@ -160,9 +167,13 @@ def delete_organization(org_id: UUID):
         raise HTTPException(status_code=404, detail="Organization not found")
     del organizations[org_id]
 ```
+
+
 OpenAPI Document (Partial)
 <img width="968" height="807" alt="Screenshot 2025-09-14 205338" src="https://github.com/user-attachments/assets/0c306d82-c859-46e7-aead-3355455badaa" />
 <img width="973" height="705" alt="Screenshot 2025-09-14 205346" src="https://github.com/user-attachments/assets/0c90a8c4-852c-4498-96f7-0a351b412651" />
+
+
 
 Link to Recording of Demo
 https://youtu.be/3w3c_k68YNo
