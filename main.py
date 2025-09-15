@@ -15,6 +15,7 @@ from models.person import PersonCreate, PersonRead, PersonUpdate
 from models.address import AddressCreate, AddressRead, AddressUpdate
 from models.health import Health
 from models.event import EventCreate, EventRead, EventUpdate
+from models.organization import OrganizationCreate, OrganizationRead, OrganizationUpdate
 
 
 port = int(os.environ.get("FASTAPIPORT", 8000))
@@ -25,6 +26,7 @@ port = int(os.environ.get("FASTAPIPORT", 8000))
 persons: Dict[UUID, PersonRead] = {}
 addresses: Dict[UUID, AddressRead] = {}
 events: Dict[UUID, EventRead] = {}
+organizations: Dict[UUID, EventRead] = {}
 
 app = FastAPI(
     title="Person/Address API",
@@ -212,6 +214,45 @@ def delete_event(event_id: UUID):
     if event_id not in events:
         raise HTTPException(status_code=404, detail="Event not found")
     del events[event_id]
+
+
+
+# -----------------------------------------------------------------------------
+# Organization endpoints
+# -----------------------------------------------------------------------------
+@app.post("/organizations", response_model=OrganizationRead, status_code=201)
+def create_organization(org: OrganizationCreate):
+    org_read = OrganizationRead(**org.model_dump())
+    organizations[org_read.id] = org_read
+    return org_read
+
+@app.get("/organizations", response_model=List[OrganizationRead])
+def list_organizations():
+    return list(organizations.values())
+
+@app.get("/organizations/{org_id}", response_model=OrganizationRead)
+def get_organization(org_id: UUID):
+    if org_id not in organizations:
+        raise HTTPException(status_code=404, detail="Organization not found")
+    return organizations[org_id]
+
+
+@app.patch("/organizations/{org_id}", response_model=OrganizationRead)
+def update_organization(org_id: UUID, update: OrganizationUpdate):
+    if org_id not in organizations:
+        raise HTTPException(status_code=404, detail="Organization not found")
+    stored = organizations[org_id].model_dump()
+    stored.update(update.model_dump(exclude_unset=True))
+    stored["updated_at"] = datetime.utcnow()
+    organizations[org_id] = OrganizationRead(**stored)
+    return organizations[org_id]
+
+
+@app.delete("/organizations/{org_id}", status_code=204)
+def delete_organization(org_id: UUID):
+    if org_id not in organizations:
+        raise HTTPException(status_code=404, detail="Organization not found")
+    del organizations[org_id]
 
 # -----------------------------------------------------------------------------
 # Root
