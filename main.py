@@ -14,6 +14,8 @@ from typing import Optional
 from models.person import PersonCreate, PersonRead, PersonUpdate
 from models.address import AddressCreate, AddressRead, AddressUpdate
 from models.health import Health
+from models.event import EventCreate, EventRead, EventUpdate
+
 
 port = int(os.environ.get("FASTAPIPORT", 8000))
 
@@ -22,6 +24,7 @@ port = int(os.environ.get("FASTAPIPORT", 8000))
 # -----------------------------------------------------------------------------
 persons: Dict[UUID, PersonRead] = {}
 addresses: Dict[UUID, AddressRead] = {}
+events: Dict[UUID, EventRead] = {}
 
 app = FastAPI(
     title="Person/Address API",
@@ -158,6 +161,57 @@ def update_person(person_id: UUID, update: PersonUpdate):
     stored.update(update.model_dump(exclude_unset=True))
     persons[person_id] = PersonRead(**stored)
     return persons[person_id]
+
+
+# -----------------------------------------------------------------------------
+# Event endpoints
+# -----------------------------------------------------------------------------
+@app.post("/events", response_model=EventRead, status_code=201)
+def create_event(event: EventCreate):
+    event_read = EventRead(**event.model_dump())
+    events[event_read.id]= event_read
+    return event_read
+
+@app.get("/events", response_model=List[EventRead])
+def list_events(
+    title: Optional[str] = Query(None, description="Filter by title substring"),
+    upcoming: Optional[bool] = Query(False, description="Show future events only"),
+): 
+    result = list(events.values())
+
+    if title is not None:
+        result = [a for a in result if title.lower() in a.title.lower()]
+
+    if upcoming is not None:
+        now = datetime.utcnow()
+        result = [a for a in result if a.start_time > now]
+
+    return result
+
+
+@app.get("/events/{event_id}", response_model=EventRead)
+def get_event(event_id: UUID):
+    if event_id not in events:
+        raise HTTPException(status_code=404, detail="Event not found")
+    return events[event_id]
+
+
+@app.patch("/events/{event_id}", response_model=EventRead)
+def update_event(event_id: UUID, update: EventUpdate):
+    if event_id not in events:
+        raise HTTPException(status_code=404, detail="Event not found")
+    stored = events[event_id].model_dump()
+    stored.update(update.model_dump(exclude_unset=True))
+    stored["updated_at"] = datetime.utcnow()
+    events[event_id] = EventRead(**stored)
+    return events[event_id]
+
+
+@app.delete("/events/{event_id}", status_code=204)
+def delete_event(event_id: UUID):
+    if event_id not in events:
+        raise HTTPException(status_code=404, detail="Event not found")
+    del events[event_id]
 
 # -----------------------------------------------------------------------------
 # Root
