@@ -26,6 +26,7 @@ Sprint Completion Status Report
 
 2. Completed Work ✅
 Resource 1
+```
 - class EventBase(BaseModel):
     title: str = Field(..., description="Title of the event")
     description: str = Field(..., description="Description of the event")
@@ -44,8 +45,10 @@ Resource 1
             }
         }
     }
+```
 
 Resource 2
+```
 - class OrganizationBase(BaseModel):
     name: str = Field(..., description="Name of the organization")
     org_type: str = Field(..., description="Type of organization (College, company, club, etc.)")
@@ -64,11 +67,12 @@ Resource 2
             }
         }
     }
-
+```
 main.py Routes
 # -----------------------------------------------------------------------------
 # Event endpoints
 # -----------------------------------------------------------------------------
+```
 @app.post("/events", response_model=EventRead, status_code=201)
 def create_event(event: EventCreate):
     event_read = EventRead(**event.model_dump())
@@ -116,11 +120,12 @@ def delete_event(event_id: UUID):
         raise HTTPException(status_code=404, detail="Event not found")
     del events[event_id]
 
-
+```
 
 # -----------------------------------------------------------------------------
 # Organization endpoints
 # -----------------------------------------------------------------------------
+```
 @app.post("/organizations", response_model=OrganizationRead, status_code=201)
 def create_organization(org: OrganizationCreate):
     org_read = OrganizationRead(**org.model_dump())
@@ -154,7 +159,7 @@ def delete_organization(org_id: UUID):
     if org_id not in organizations:
         raise HTTPException(status_code=404, detail="Organization not found")
     del organizations[org_id]
-
+```
 OpenAPI Document (Partial)
 <img width="968" height="807" alt="Screenshot 2025-09-14 205338" src="https://github.com/user-attachments/assets/0c306d82-c859-46e7-aead-3355455badaa" />
 <img width="973" height="705" alt="Screenshot 2025-09-14 205346" src="https://github.com/user-attachments/assets/0c90a8c4-852c-4498-96f7-0a351b412651" />
