@@ -7,19 +7,19 @@ Sprint Completion Status Report
 
 1. Sprint Goal 🎯
 **Defined	Goal:**	
-1. Clone	Professor	Ferguson’s Simple	Microservices	Repository.
-2. Create	a	project	that	is	my	version	using	two	different	resources.
-  a. Copy	the	structure	of	Professor	Ferguson’s	repository
-  b. Define	two	models.
-  c. Implement	“API	first” definition	by	implementing	placeholder	routes	for	
-   each	resource:
-    i. GET	/<resource>
-    ii. POST	/<resource>
-    iii. GET	/<resource>/{id}
-    iv. PUT /<resource>/{id}
-    v. DELETE /<resource>/{id}
-  d. Annotate	models	and	paths	to	autogenerate	OpenAPI	document.
-  e. Tested	OpenAPI	document	dispatching	to	methods.
+- Clone	Professor	Ferguson’s Simple	Microservices	Repository.
+- Create	a	project	that	is	my	version	using	two	different	resources.
+  - Copy	the	structure	of	Professor	Ferguson’s	repository
+  - Define	two	models.
+  - Implement	“API	first” definition	by	implementing	placeholder	routes	for	
+    each	resource:
+    - GET	/<resource>
+    - POST	/<resource>
+    - GET	/<resource>/{id}
+    - PUT /<resource>/{id}
+    - DELETE /<resource>/{id}
+  - Annotate	models	and	paths	to	autogenerate	OpenAPI	document.
+  - Tested	OpenAPI	document	dispatching	to	methods.
 
 
 **Outcome:**	[Achieved]
